@@ -1,5 +1,6 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View, Pressable } from "react-native";
 import { Product } from "../types";
+import { Link } from "expo-router";
 
 import Colors from "../constants/Colors";
 
@@ -12,15 +13,17 @@ type ProductListItemProps = {
 
 const ProductListItem = ({ product }: ProductListItemProps) => {
   return (
-    <View style={styles.container}>
-      <Image
-        src={product.image || defaultPizzaImage}
-        style={styles.image}
-        resizeMode="contain"
-      />
-      <Text style={styles.title}>{product.name}</Text>
-      <Text style={styles.price}>${product.price}</Text>
-    </View>
+    <Link href={`/menu/${product.id}`} asChild>
+      <Pressable style={styles.container}>
+        <Image
+          src={product.image || defaultPizzaImage}
+          style={styles.image}
+          resizeMode="contain"
+        />
+        <Text style={styles.title}>{product.name}</Text>
+        <Text style={styles.price}>${product.price}</Text>
+      </Pressable>
+    </Link>
   );
 };
 
@@ -40,7 +43,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: "600",
     marginVertical: 10,
   },
   price: {
