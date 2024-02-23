@@ -1,14 +1,6 @@
-import orders from "@/assets/data/orders";
-import OrderListItem from "@/src/components/OrderListItem";
-import { FlatList } from "react-native";
+import { Redirect } from "expo-router";
 
-const OrdersScreen = () => {
-  return (
-    <FlatList
-      data={orders}
-      renderItem={({ item }) => <OrderListItem order={item} />}
-      contentContainerStyle={{ gap: 10, padding: 10 }}
-    />
-  );
+const index = () => {
+  return <Redirect href={"/orders/list/"} />;
 };
-export default OrdersScreen;
+export default index;
