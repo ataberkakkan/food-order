@@ -1,12 +1,16 @@
 import { View, Text, StyleSheet, TextInput, Image, Alert } from "react-native";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { defaultPizzaImage } from "@/src/components/ProductListItem";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 
 import Button from "@/src/components/Button";
 import Colors from "@/src/constants/Colors";
-import { useInsertProduct } from "@/src/api/products";
+import {
+  useInsertProduct,
+  useProduct,
+  useUpdateProduct,
+} from "@/src/api/products";
 
 const CreateProductScreen = () => {
   const [image, setImage] = useState<string | null>(null);
@@ -14,13 +18,24 @@ const CreateProductScreen = () => {
   const [price, setPrice] = useState("");
   const [errors, setErrors] = useState("");
 
-  const { id } = useLocalSearchParams();
+  const { id: idString } = useLocalSearchParams();
+  const id = parseFloat(typeof idString === "string" ? idString : idString[0]);
 
-  const isUpdating = !!id;
+  const isUpdating = !!idString;
 
   const router = useRouter();
 
   const { mutate: insertProduct } = useInsertProduct();
+  const { mutate: updateProduct } = useUpdateProduct();
+  const { data: updatingProduct } = useProduct(id);
+
+  useEffect(() => {
+    if (updatingProduct) {
+      setName(updatingProduct.name);
+      setPrice(updatingProduct.price.toString());
+      setImage(updatingProduct.image);
+    }
+  }, [updatingProduct]);
 
   const resetFields = () => {
     setName("");
@@ -59,7 +74,15 @@ const CreateProductScreen = () => {
       return;
     }
 
-    resetFields();
+    updateProduct(
+      { id, name, price: parseFloat(price), image },
+      {
+        onSuccess: () => {
+          resetFields();
+          router.back();
+        },
+      }
+    );
   };
 
   const onCreate = () => {
