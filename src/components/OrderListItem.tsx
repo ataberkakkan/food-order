@@ -1,5 +1,5 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
-import { Order } from "../types";
+import { Tables } from "../types";
 import { Link, useSegments } from "expo-router";
 import relativeTime from "dayjs/plugin/relativeTime";
 import dayjs from "dayjs";
@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 dayjs.extend(relativeTime);
 
 type OrderListItemProps = {
-  order: Order;
+  order: Tables<"orders">;
 };
 
 const OrderListItem = ({ order }: OrderListItemProps) => {
