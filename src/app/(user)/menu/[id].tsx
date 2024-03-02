@@ -49,9 +49,9 @@ const ProductDetailsScreen = () => {
   return (
     <View style={styles.container}>
       <Stack.Screen
-        options={{ title: product.name, headerBackTitleVisible: false }}
+        options={{ title: product?.name, headerBackTitleVisible: false }}
       />
-      <Image src={product.image || defaultPizzaImage} style={styles.image} />
+      <Image src={product?.image || defaultPizzaImage} style={styles.image} />
 
       <Text>Select Size</Text>
 
@@ -81,7 +81,7 @@ const ProductDetailsScreen = () => {
         ))}
       </View>
 
-      <Text style={styles.price}>${product.price}</Text>
+      <Text style={styles.price}>${product?.price}</Text>
       <Button onPress={addToCart} text="Add to cart" />
     </View>
   );
