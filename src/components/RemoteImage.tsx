@@ -18,10 +18,6 @@ const RemoteImage = ({ path, fallback, ...imageProps }: RemoteImageProps) => {
         .from("product-images")
         .download(path);
 
-      if (error) {
-        console.log(error);
-      }
-
       if (data) {
         const fr = new FileReader();
         fr.readAsDataURL(data);
