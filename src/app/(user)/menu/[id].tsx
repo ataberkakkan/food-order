@@ -2,7 +2,6 @@ import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import {
   View,
   Text,
-  Image,
   StyleSheet,
   Pressable,
   ActivityIndicator,
@@ -14,6 +13,7 @@ import Button from "@/src/components/Button";
 import { PizzaSize } from "@/src/types";
 import { useProduct } from "@/src/api/products";
 import { defaultPizzaImage } from "@/src/components/ProductListItem";
+import RemoteImage from "@/src/components/RemoteImage";
 
 const sizes: PizzaSize[] = ["S", "M", "L", "XL"];
 
@@ -51,7 +51,11 @@ const ProductDetailsScreen = () => {
       <Stack.Screen
         options={{ title: product?.name, headerBackTitleVisible: false }}
       />
-      <Image src={product?.image || defaultPizzaImage} style={styles.image} />
+      <RemoteImage
+        path={product?.image}
+        fallback={defaultPizzaImage}
+        style={styles.image}
+      />
 
       <Text>Select Size</Text>
 
