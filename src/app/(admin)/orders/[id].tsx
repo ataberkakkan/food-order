@@ -11,25 +11,35 @@ import OrderItemListItem from "../../../components/OrderItemListItem";
 import OrderListItem from "../../../components/OrderListItem";
 import { OrderStatusList } from "@/src/types";
 import Colors from "@/src/constants/Colors";
-import { useOrderDetails } from "@/src/api/orders";
+import { useOrderDetails, useUpdateOrder } from "@/src/api/orders";
 
 const OrderDetailScreen = () => {
   const { id: idString } = useLocalSearchParams();
   const id = parseFloat(typeof idString === "string" ? idString : idString[0]);
 
   const { data: order, isLoading, error } = useOrderDetails(id);
+  const { mutate: updateOrder } = useUpdateOrder();
+
+  const updateStatus = (status: string) => {
+    updateOrder({ id: id, updatedField: { status } });
+  };
 
   if (isLoading) {
     return <ActivityIndicator />;
   }
 
-  if (error) {
-    return <Text>Failed to fetch product</Text>;
+  if (error || !order) {
+    return <Text>Failed to fetch</Text>;
   }
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: `Order #${order?.id}` }} />
+      <Stack.Screen
+        options={{
+          title: `Order #${order?.id}`,
+          headerBackTitleVisible: false,
+        }}
+      />
 
       <OrderListItem order={order} />
 
@@ -44,7 +54,7 @@ const OrderDetailScreen = () => {
               {OrderStatusList.map((status) => (
                 <Pressable
                   key={status}
-                  onPress={() => console.warn("Update status")}
+                  onPress={() => updateStatus(status)}
                   style={{
                     borderColor: Colors.light.tint,
                     borderWidth: 1,
